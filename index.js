@@ -1,8 +1,7 @@
 const express = require('express'),
-    fs = require('fs'),
-    morgan = require('morgan'),
-    path = require('path');
-
+morgan = require('morgan'),
+fs = require('fs'), // import built in node modules fs and path 
+path = require('path');
 const app = express();
 
 
@@ -11,43 +10,95 @@ const app = express();
 const movieList = [
     {
         title: 'Coach Carter',
-        director: 'Thomas Carter'
+        genre: 'Drama, Sports',
+        actors: 'Samuel L. Jackson, Rick Gonzales, Robert Richard',
+        director: 'Thomas Carter',
+        releaseYear: '2005',
+        rating: 'PG-13',
+        length: '136 mins'
+
     },
     {
         title: 'Movie 2',
-        director: 'Director 2'
+        genre: '',
+        actors: '',
+        director: 'Director 2',
+        releaseYear: '',
+        rating: '',
+        length: ''
+        
     },
     {
         title: 'Movie 3',
-        director: 'Director 3'
+        genre: '',
+        actors: '',
+        director: 'Director 3',
+        releaseYear: '',
+        rating: '',
+        length: ''
     },
     {
         title: 'Movie 4',
-        director: 'Director 4'
+        genre: '',
+        actors: '',
+        director: 'Director 4',
+        releaseYear: '',
+        rating: '',
+        length: ''
     },
     {
         title: 'Movie 5',
-        director: 'Director 5'
+        genre: '',
+        actors: '',
+        director: 'Director 5',
+        releaseYear: '',
+        rating: '',
+        length: ''
     },
     {
         title: 'Movie 6',
-        director: 'Director 6'
+        genre: '',
+        actors: '',
+        director: 'Director 6',
+        releaseYear: '',
+        rating: '',
+        length: ''
     },
     {
         title: 'Movie 7',
-        director: 'Director 7'
+        genre: '',
+        actors: '',
+        director: 'Director 7',
+        releaseYear: '',
+        rating: '',
+        length: ''
     },
     {
         title: 'Movie 8',
-        director: 'Director 8'
+        genre: '',
+        actors: '',
+        director: 'Director 8',
+        releaseYear: '',
+        rating: '',
+        length: ''
     },
     {
         title: 'Movie 9',
-        director: 'Director 9'
+        genre: '',
+        actors: '',
+        director: 'Director 9',
+        releaseYear: '',
+        rating: '',
+        length: ''
     },
     {
         title: 'Movie 10',
-        director: 'Director 10'
+        genre: '',
+        actors: '',
+        director: 'Director 10',
+        releaseYear: '',
+        rating: '',
+        length: ''
     },
 ];
 
@@ -59,10 +110,10 @@ app.use(morgan('combined', { stream: accessLogStream }));
 app.use(express.static('public'));
 
 // GET request
-app.get('/', (req, res) => {
+app.get('/', (req, res) =>{
     res.send('Welcome to myFlix application!');
 });
-app.get('/documentation.html', (req, res) => {
+app.get('/documentation.html', (req, res) =>{
     res.sendFile('public/documentation.html', { root: __dirname });
 });
 app.get('/movies', (req, res) => {
