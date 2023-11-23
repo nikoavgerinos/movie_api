@@ -3,19 +3,205 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="../css/styles.css" />
+
     <title>myFlix API Documentation</title>
   </head>
+
   <body>
-    <h1>Welcome to myFlix API Documentation</h1>
+    <div class="container" id="title">
+      <h1>My Flix app</h1>
+      <p>
+        This web app provides users with access to movie details, directors, and
+        genres. Users can register, update their info, and create a list of
+        favorite movies.
+      </p>
+    </div>
 
-    <p>
-      The myFlix API provides users with access to information about different
-      movies, directors, and genres. Users can sign up, update their personal
-      information, and create a list of their favorite movies. This API is part
-      of a full-stack web application built using the MERN (MongoDB, Express,
-      React, and Node.js) stack.
-    </p>
+    <div class="container">
+      <h2 class="text-left">MyFlix API Documentation</h2>
+    </div>
 
-    <!-- Add more sections and instructions as needed -->
+    <!-- table  -->
+    <div class="container">
+      <table
+        class="table table-striped table-bordered table-responsive{-sm|-md|-lg|-xl}"
+        style="width: 100%"
+      >
+        <thead>
+          <tr>
+            <th class="col-2">Business Logic</th>
+            <th class="col-1">URL</th>
+            <th class="col-1">HTTP Method</th>
+            <th class="col-3">Request body data format</th>
+            <th class="col-5">Response body data format</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Get data about a single movie by title</td>
+            <td>/movies/:title</td>
+            <td>GET</td>
+            <td>None</td>
+            <td>
+              A JSON object holding all info data of a single movie, containing
+              title, year, image url, a brief description, director info and the
+              genre. Example:
+              <code>
+                { "title": "Coach Carter", "year": "2005", "image":
+                "https://www.themoviedb.org/t/p/original/y3HOTTyM5nLsdUzXFtFCohG28qj.jpg",
+                "description": "Coach Carter is a riveting sports drama that
+                follows the inspiring true story of Coach Ken Carter, who shocks
+                the basketball community by benching his undefeated team to
+                prioritize academics, teaching them life lessons that transcend
+                the court and ignite a powerful journey of self-discovery and
+                triumph.", "director": [ { "Name": "Thomas Carter", "Birth":
+                "1953", "Death": "", "Bio": "Thomas Carter is an accomplished
+                American film and television director, known for his work on
+                'Coach Carter' and other notable projects. With a career
+                spanning decades, he has made significant contributions to the
+                entertainment industry." } ], "genres": [ { "genreName":
+                "Drama", }, ] }, ];
+              </code>
+            </td>
+          </tr>
+          <tr>
+            <td>Return data about a genre by name</td>
+            <td>/movies/genre/:genreName</td>
+            <td>GET</td>
+            <td>None</td>
+            <td>
+              A JSON object holding data about a single genre, containing genre
+              name and a brief description. Example:
+              <code>
+                "genres": [ { "genreName": "Drama", "genreDescription": "Drama
+                is a genre of fiction characterized by discourses or works
+                intended to evoke intense emotions, often focusing on the
+                profound and serious aspects of human experience, compelling
+                audiences through compelling narratives and emotional
+                resonance." }, ]
+              </code>
+            </td>
+          </tr>
+          <tr>
+            <td>Return data with info about a specific director</td>
+            <td>/movies/directors/:directorsName</td>
+            <td>GET</td>
+            <td>None</td>
+            <td>
+              A JSON object holding data about a single director, containing the
+              director's name, birth year, year of death (if applicable) and a
+              brief bio. Example:
+              <code>
+                "director": [ { "Name": "Thomas Carter", "Birth": "1953",
+                "Death": "", "Bio": "Thomas Carter is an accomplished American
+                film and television director, known for his work on 'Coach
+                Carter' and other notable projects. With a career spanning
+                decades, he has made significant contributions to the
+                entertainment industry." }
+              </code>
+            </td>
+          </tr>
+          <tr>
+            <td>Allow new users to register</td>
+            <td>/users</td>
+            <td>POST</td>
+            <td>
+              A JSON object holding data about the user to add, structured as
+              follows:
+              <code>
+                {id: 1, name: "George", email: "george.miller@gmail.com",
+                password: "george123" }
+              </code>
+            </td>
+            <td>
+              A JSON object holding user data plus an ID: favorite movies:
+              <code>
+                { id: 1, name: "George", email: "george.miller@gmail.com",
+                password: "george123", favoriteMovies: ["Coach Carter"] }
+              </code>
+            </td>
+          </tr>
+          <tr>
+            <td>Allow users to update their user info (username)</td>
+            <td>/users/:username</td>
+            <td>PUT</td>
+            <td>
+              A JSON object holding the user info that is suspect to change. It
+              should contain at least one of the following key/value pairs:
+              <code>
+                {id: 1, name: "George", email: "george.miller@gmail.com",
+                password: "george123", favoriteMovies: ["Coach Carter"] }
+              </code>
+            </td>
+            <td>
+              A JSON object holding data about the updated user information.
+              Example:
+              <code> { "id": 2, "name": "Lara", "favoriteMovies": [] } </code>
+            </td>
+          </tr>
+          <tr>
+            <td>Add a movie to the user's favorite list</td>
+            <td>/users/:Username/movies/:movieID</td>
+            <td>POST</td>
+            <td>None</td>
+            <td>
+              A JSON object holding all user info with all key/values pair
+              updated:
+              <code>
+                { username: "George", password: "george123",
+                'userEmail':'george.miller@gmail.com', "FavoriteMovies": ["Coach
+                Carter"], }
+              </code>
+            </td>
+          </tr>
+          <tr>
+            <td>Remove a movie from the user's favorite list</td>
+            <td>/users/:Username/movies/:movieID</td>
+            <td>DELETE</td>
+            <td>None</td>
+            <td>
+              A JSON object holding all user info with all key/values pair
+              updated:
+              <code>
+                { username: "George", password: "george123",
+                'userEmail':'george.miller@gmail.com', "FavoriteMovies": [" "], }
+              </code>
+            </td>
+          </tr>
+          <tr>
+            <td>Delete user registration</td>
+            <td>/users/:Username</td>
+            <td>DELETE</td>
+            <td>None</td>
+            <td>
+              A text message indicating whether a user was successfully removed.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- imported scripts: jQuery first, then Popper.js, then Bootstrap JS -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
   </body>
 </html>
