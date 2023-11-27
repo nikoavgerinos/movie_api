@@ -184,6 +184,25 @@
               A text message indicating whether a user was successfully removed.
             </td>
           </tr>
+          <tr>
+            <td>Allow users to update their password</td>
+            <td>/users/:username/password</td>
+            <td>PUT</td>
+            <td>
+              A JSON object holding the user's new password. Example:
+              <code>
+                { "password": "newpassword456" }
+              </code>
+            </td>
+            <td>
+              A JSON object indicating the success of the password update.
+              Example:
+              <code>
+                { "message": "Password updated successfully." }
+              </code>
+            </td>
+          </tr>
+          
         </tbody>
       </table>
     </div>

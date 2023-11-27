@@ -136,7 +136,7 @@ app.post('/users', (req, res) => {
     const newUser = req.body;
 
     if (!newUser || !newUser.name) {
-        res.status(400).json({ error: 'Bad Request', message: 'Please provide a valid user object with a name.' });
+        res.status(400).json({ error: 'Bad Request', message: 'Please provide a valid username.' });
         return;
     }
 
@@ -158,7 +158,7 @@ app.put('/users/:id', (req, res) => {
         user.name = updatedUser.name;
         res.status(200).json(user);
     } else {
-        res.status(400).send('no such user');
+        res.status(400).send('user not found :(');
     }
 });
 
@@ -167,7 +167,7 @@ app.post('/users/:id/:movietitle', (req, res) => {
     const { id, movietitle } = req.params;
 
     if (!movietitle) {
-        res.status(400).send('Please provide a movie title');
+        res.status(400).send('movie not found :(');
         return;
     }
 
@@ -177,7 +177,7 @@ app.post('/users/:id/:movietitle', (req, res) => {
         user.favoriteMovies.push(movietitle);
         res.status(200).json(`${movietitle} has been added to user ${id}'s favorite list`);
     } else {
-        res.status(400).send('no such user')
+        res.status(400).send('user not found :(')
     }
 });
 
@@ -205,7 +205,7 @@ app.delete('/users/:id', (req, res) => {
         users = users.filter(user => user.id != id);
         res.status(200).json(`user ${id} has been deleted`);
     } else {
-        res.status(400).send('no such user')
+        res.status(400).send('user not found :(')
     }
 });
 
