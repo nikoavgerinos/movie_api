@@ -10,10 +10,8 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="../css/styles.css" />
-
     <title>myFlix API Documentation</title>
   </head>
-
   <body>
     <div class="container" id="title">
       <h1>My Flix app</h1>
@@ -23,12 +21,9 @@
         favorite movies.
       </p>
     </div>
-
     <div class="container">
       <h2 class="text-left">MyFlix API Documentation</h2>
     </div>
-
-    <!-- table  -->
     <div class="container">
       <table
         class="table table-striped table-bordered table-responsive{-sm|-md|-lg|-xl}"
@@ -54,20 +49,16 @@
               title, year, image url, a brief description, director info and the
               genre. Example:
               <code>
-                { "title": "Coach Carter", "year": "2005", "image":
-                "https://www.themoviedb.org/t/p/original/y3HOTTyM5nLsdUzXFtFCohG28qj.jpg",
-                "description": "Coach Carter is a riveting sports drama that
-                follows the inspiring true story of Coach Ken Carter, who shocks
-                the basketball community by benching his undefeated team to
-                prioritize academics, teaching them life lessons that transcend
-                the court and ignite a powerful journey of self-discovery and
-                triumph.", "director": [ { "Name": "Thomas Carter", "Birth":
-                "1953", "Death": "", "Bio": "Thomas Carter is an accomplished
-                American film and television director, known for his work on
-                'Coach Carter' and other notable projects. With a career
-                spanning decades, he has made significant contributions to the
-                entertainment industry." } ], "genres": [ { "genreName":
-                "Drama", }, ] }, ];
+                { "Title": "Inception", "Description": "A thief who steals
+                corporate secrets through the use of dream-sharing technology is
+                given the inverse task of planting an idea into the mind of a
+                C.E.O.", "Genre": { "Name": "Sci-Fi", "Description": "Science
+                fiction films are speculative fiction that explore imaginative
+                and futuristic concepts." }, "Director": { "Name": "Christopher
+                Nolan", "Bio": "Christopher Nolan, a British-American film
+                director, producer, and screenwriter born in 1970, is known for
+                his innovative storytelling and groundbreaking films.", "Birth":
+                "1970", "Death": null }, "Featured": true }
               </code>
             </td>
           </tr>
@@ -80,12 +71,9 @@
               A JSON object holding data about a single genre, containing genre
               name and a brief description. Example:
               <code>
-                "genres": [ { "genreName": "Drama", "genreDescription": "Drama
-                is a genre of fiction characterized by discourses or works
-                intended to evoke intense emotions, often focusing on the
-                profound and serious aspects of human experience, compelling
-                audiences through compelling narratives and emotional
-                resonance." }, ]
+                "Genre": { "Name": "Sci-Fi", "Description": "Science fiction
+                films are speculative fiction that explore imaginative and
+                futuristic concepts." }
               </code>
             </td>
           </tr>
@@ -99,12 +87,11 @@
               director's name, birth year, year of death (if applicable) and a
               brief bio. Example:
               <code>
-                "director": [ { "Name": "Thomas Carter", "Birth": "1953",
-                "Death": "", "Bio": "Thomas Carter is an accomplished American
-                film and television director, known for his work on 'Coach
-                Carter' and other notable projects. With a career spanning
-                decades, he has made significant contributions to the
-                entertainment industry." }
+                "Director": { "Name": "Christopher Nolan", "Bio": "Christopher
+                Nolan, a British-American film director, producer, and
+                screenwriter born in 1970, is known for his innovative
+                storytelling and groundbreaking films.", "Birth": "1970",
+                "Death": null }
               </code>
             </td>
           </tr>
@@ -116,38 +103,52 @@
               A JSON object holding data about the user to add, structured as
               follows:
               <code>
-                {id: 1, name: "George", email: "george.miller@gmail.com",
-                password: "george123" }
+                { "Username": "newUser", "Password": "password123", "Email":
+                "newuser@example.com", "Birthday": "1990-01-01T00:00:00.000Z",
+                "FavoriteMovies": [], "_id": "6565fdb3fc8d5f4e857f5dd2", "__v":
+                0 }
               </code>
             </td>
             <td>
               A JSON object holding user data plus an ID: favorite movies:
               <code>
-                { id: 1, name: "George", email: "george.miller@gmail.com",
-                password: "george123", favoriteMovies: ["Coach Carter"] }
+                { "_id": "6565fdb3fc8d5f4e857f5dd2", "Username": "newUser",
+                "Password": "newPassword123", "Email": "new.email@example.com",
+                "Birthday": "1990-01-01T00:00:00.000Z", "FavoriteMovies": [
+                "656495341a40824464f3e0b5" ], "__v": 1 }
               </code>
             </td>
           </tr>
           <tr>
-            <td>Allow users to update their user info (username)</td>
+            <td>
+              Allow users to update their user info (username, password, email,
+              date of birth)
+            </td>
             <td>/users/:username</td>
             <td>PUT</td>
             <td>
-              A JSON object holding the user info that is suspect to change. It
+              A JSON object holding the user info that is subject to change. It
               should contain at least one of the following key/value pairs:
               <code>
-                {id: 1, name: "George", email: "george.miller@gmail.com",
-                password: "george123", favoriteMovies: ["Coach Carter"] }
+                { "_id": "6565fdb3fc8d5f4e857f5dd2", "Username": "newUser",
+                "Password": "newPassword123", "Email": "new.email@example.com",
+                "Birthday": "1990-01-01T00:00:00.000Z", "FavoriteMovies": [],
+                "__v": 0 }
               </code>
             </td>
             <td>
               A JSON object holding data about the updated user information.
               Example:
-              <code> { "id": 2, "name": "Lara", "favoriteMovies": [] } </code>
+              <code>
+                { "_id": "6565fdb3fc8d5f4e857f5dd2", "Username": "newUser",
+                "Password": "newPassword123", "Email": "new.email@example.com",
+                "Birthday": "1990-01-01T00:00:00.000Z", "FavoriteMovies": [],
+                "__v": 0 }
+              </code>
             </td>
           </tr>
           <tr>
-            <td>Add a movie to the user's favorite list</td>
+            <td>Allow users to add a movie to their list of favorites</td>
             <td>/users/:Username/movies/:movieID</td>
             <td>POST</td>
             <td>None</td>
@@ -155,14 +156,15 @@
               A JSON object holding all user info with all key/values pair
               updated:
               <code>
-                { username: "George", password: "george123",
-                'userEmail':'george.miller@gmail.com', "FavoriteMovies": ["Coach
-                Carter"], }
+                { "_id": "6565fdb3fc8d5f4e857f5dd2", "Username": "newUser",
+                "Password": "newPassword123", "Email": "new.email@example.com",
+                "Birthday": "1990-01-01T00:00:00.000Z", "FavoriteMovies": [
+                "656495341a40824464f3e0b5" ], "__v": 1 }
               </code>
             </td>
           </tr>
           <tr>
-            <td>Remove a movie from the user's favorite list</td>
+            <td>Allow users to remove a movie from their list of favorites</td>
             <td>/users/:Username/movies/:movieID</td>
             <td>DELETE</td>
             <td>None</td>
@@ -170,8 +172,10 @@
               A JSON object holding all user info with all key/values pair
               updated:
               <code>
-                { username: "George", password: "george123",
-                'userEmail':'george.miller@gmail.com', "FavoriteMovies": [" "], }
+                { "_id": "6565fdb3fc8d5f4e857f5dd2", "Username": "newUser",
+                "Password": "newPassword123", "Email": "new.email@example.com",
+                "Birthday": "1990-01-01T00:00:00.000Z", "FavoriteMovies": [
+                "656495341a40824464f3e0b5" ], "__v": 1 }
               </code>
             </td>
           </tr>
@@ -190,19 +194,14 @@
             <td>PUT</td>
             <td>
               A JSON object holding the user's new password. Example:
-              <code>
-                { "password": "newpassword456" }
-              </code>
+              <code> { "password": "newpassword456" } </code>
             </td>
             <td>
               A JSON object indicating the success of the password update.
               Example:
-              <code>
-                { "message": "Password updated successfully." }
-              </code>
+              <code> { "message": "Password updated successfully." } </code>
             </td>
           </tr>
-          
         </tbody>
       </table>
     </div>
