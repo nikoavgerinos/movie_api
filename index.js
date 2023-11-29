@@ -119,11 +119,11 @@ app.get('/directors/:name', passport.authenticate('jwt', { session: false }), as
 
 // User registration (no authentication needed here)
 app.post('/users', [
-    body('Username').notEmpty().withMessage('Username is required'),
-    body('Password').notEmpty().withMessage('Password is required')
-        .isLength({ min: 8 }).withMessage('Password must be at least 8 characters'),
-    body('Email').isEmail().withMessage('Invalid email'),
-    body('Birthday').notEmpty().withMessage('Birthday is required'),
+    check('Username', 'Username is required').notEmpty(),
+    check('Password', 'Password is required').notEmpty(),
+    check('Password', 'Password must be at least 8 characters').isLength({ min: 8 }),
+    check('Email', 'Invalid email').isEmail(),
+    check('Birthday', 'Birthday is required').notEmpty(),
 ], async (req, res) => {
     try {
         // Validate input
@@ -183,11 +183,11 @@ app.get('/users/:Username', passport.authenticate('jwt', { session: false }), as
 
 // Update user endpoint
 app.put('/users/:Username', passport.authenticate('jwt', { session: false }), [
-    body('Username').notEmpty().withMessage('Username is required'),
-    body('Password').notEmpty().withMessage('Password is required')
-        .isLength({ min: 8 }).withMessage('Password must be at least 8 characters'),
-    body('Email').isEmail().withMessage('Invalid email'),
-    body('Birthday').notEmpty().withMessage('Birthday is required'),
+    check('Username', 'Username is required').notEmpty(),
+    check('Password', 'Password is required').notEmpty(),
+    check('Password', 'Password must be at least 8 characters').isLength({ min: 8 }),
+    check('Email', 'Invalid email').isEmail(),
+    check('Birthday', 'Birthday is required').notEmpty(),
 ], async (req, res) => {
     // CONDITION TO CHECK ADDED HERE
     if (req.user.Username !== req.params.Username) {
@@ -222,11 +222,10 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }), [
     }
 });
 
-
 // Add a movie to a user's list of favorites
 app.post('/users/:username/favorites/:movieId', passport.authenticate('jwt', { session: false }), [
-    body('username').notEmpty().withMessage('Invalid username'),
-    body('movieId').isMongoId().withMessage('Invalid movieId'), // Assuming MongoDB ObjectId for movieId
+    check('username', 'Invalid username').notEmpty(),
+    check('movieId', 'Invalid movieId').isMongoId(), // Assuming MongoDB ObjectId for movieId
 ], async (req, res) => {
     const username = req.params.username;
     const movieId = req.params.movieId;
@@ -269,11 +268,10 @@ app.post('/users/:username/favorites/:movieId', passport.authenticate('jwt', { s
     }
 });
 
-
-// Remove a movie from the user's list of favorites
+/// Remove a movie from the user's list of favorites
 app.delete('/users/:username/favorites/:movieId', passport.authenticate('jwt', { session: false }), [
-    body('username').notEmpty().withMessage('Invalid username'),
-    body('movieId').isMongoId().withMessage('Invalid movieId'), // Assuming MongoDB ObjectId for movieId
+    check('username', 'Invalid username').notEmpty(),
+    check('movieId', 'Invalid movieId').isMongoId(), // Assuming MongoDB ObjectId for movieId
 ], async (req, res) => {
     const username = req.params.username;
     const movieId = req.params.movieId;
@@ -315,7 +313,7 @@ app.delete('/users/:username/favorites/:movieId', passport.authenticate('jwt', {
 
 // Deregister user 
 app.delete('/users/:username', passport.authenticate('jwt', { session: false }), [
-    body('username').notEmpty().withMessage('Invalid username'),
+    check('username', 'Invalid username').notEmpty(),
 ], async (req, res) => {
     const username = req.params.username;
 
@@ -342,7 +340,6 @@ app.delete('/users/:username', passport.authenticate('jwt', { session: false }),
         res.status(500).send('Error: ' + error);
     }
 });
-
 
 
 // Create error-handling middleware
