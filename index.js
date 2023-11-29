@@ -5,13 +5,16 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const uuid = require('uuid');
 const mongoose = require('mongoose');
+const { check, validationResult } = require('express-validator');
 const Models = require('./models.js');
+const hashPassword = Models.hashPassword;
 
 
 const Movies = Models.Movie; // Use the correct property name 'Movie'
 const Users = Models.User;
 
-mongoose.connect('mongodb://localhost:27017/cfDB', { useNewUrlParser: true, useUnifiedTopology: true });
+//mongoose.connect('mongodb://localhost:27017/cfDB', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect( process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 
 const app = express();
@@ -114,16 +117,42 @@ app.get('/directors/:name', passport.authenticate('jwt', { session: false }), as
     }
 });
 
+const { check, validationResult } = require('express-validator');
+
 // User registration (no authentication needed here)
-app.post('/users', async (req, res) => {
+app.post('/users', [
+    check('Username', 'Username is required').notEmpty(),
+    check('Password', 'Password is required').notEmpty(),
+    check('Password', 'Password must be at least 8 characters').isLength({ min: 8 }),
+    check('Email', 'Invalid email').isEmail(),
+    check('Birthday', 'Birthday is required').notEmpty(),
+], async (req, res) => {
     try {
-        const newUser = await Users.create(req.body);
+        // Validate input
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
+        // Hash the password before storing it
+        const hashedPassword = hashPassword(req.body.Password);
+
+        // Create a new user with the hashed password
+        const newUser = await Users.create({
+            Username: req.body.Username,
+            Password: hashedPassword,
+            Email: req.body.Email,
+            Birthday: req.body.Birthday,
+        });
+
         res.status(201).json(newUser);
     } catch (error) {
         console.error(error);
         res.status(500).send('Error: ' + error);
     }
 });
+
+
 // Get user profile endpoint
 app.get('/users/:Username', passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
@@ -155,12 +184,25 @@ app.get('/users/:Username', passport.authenticate('jwt', { session: false }), as
 
 
 // Update user endpoint
-app.put('/users/:Username', passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.put('/users/:Username', passport.authenticate('jwt', { session: false }), [
+    check('Username', 'Username is required').notEmpty(),
+    check('Password', 'Password is required').notEmpty(),
+    check('Password', 'Password must be at least 8 characters').isLength({ min: 8 }),
+    check('Email', 'Invalid email').isEmail(),
+    check('Birthday', 'Birthday is required').notEmpty(),
+], async (req, res) => {
     // CONDITION TO CHECK ADDED HERE
     if (req.user.Username !== req.params.Username) {
         return res.status(400).send('Permission denied');
     }
     // CONDITION ENDS
+
+    // Validate input
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
     try {
         const updatedUser = await Users.findOneAndUpdate(
             { Username: req.params.Username },
@@ -182,11 +224,19 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }), as
     }
 });
 
-
 // Add a movie to a user's list of favorites
-app.post('/users/:username/favorites/:movieId', passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.post('/users/:username/favorites/:movieId', passport.authenticate('jwt', { session: false }), [
+    check('username', 'Invalid username').notEmpty(),
+    check('movieId', 'Invalid movieId').isMongoId(), // Assuming MongoDB ObjectId for movieId
+], async (req, res) => {
     const username = req.params.username;
     const movieId = req.params.movieId;
+
+    // Validate input
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
 
     try {
         // Check if the user exists
@@ -219,10 +269,20 @@ app.post('/users/:username/favorites/:movieId', passport.authenticate('jwt', { s
         res.status(500).send('Error: ' + error);
     }
 });
-// Remove a movie from the user's list of favorites
-app.delete('/users/:username/favorites/:movieId', passport.authenticate('jwt', { session: false }), async (req, res) => {
+
+/// Remove a movie from the user's list of favorites
+app.delete('/users/:username/favorites/:movieId', passport.authenticate('jwt', { session: false }), [
+    check('username', 'Invalid username').notEmpty(),
+    check('movieId', 'Invalid movieId').isMongoId(), // Assuming MongoDB ObjectId for movieId
+], async (req, res) => {
     const username = req.params.username;
     const movieId = req.params.movieId;
+
+    // Validate input
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
 
     try {
         // Find the user by username
@@ -252,9 +312,18 @@ app.delete('/users/:username/favorites/:movieId', passport.authenticate('jwt', {
     }
 });
 
+
 // Deregister user 
-app.delete('/users/:username', passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.delete('/users/:username', passport.authenticate('jwt', { session: false }), [
+    check('username', 'Invalid username').notEmpty(),
+], async (req, res) => {
     const username = req.params.username;
+
+    // Validate input
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
 
     try {
         // Check if the user exists
@@ -282,6 +351,7 @@ app.use((err, req, res, next) => {
 });
 
 // listen for requests
-app.listen(8080, () => {
-    console.log('Your app is listening on port 8080.');
+const port = process.env.PORT || 8080;
+app.listen(port, '0.0.0.0', () => {
+    console.log('Listening on Port ' + port);
 });
