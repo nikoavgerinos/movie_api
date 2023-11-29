@@ -14,7 +14,7 @@ const Movies = Models.Movie; // Use the correct property name 'Movie'
 const Users = Models.User;
 
 //mongoose.connect('mongodb://localhost:27017/cfDB', { useNewUrlParser: true, useUnifiedTopology: true });
-mongoose.connect( process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 
 const app = express();
@@ -116,8 +116,6 @@ app.get('/directors/:name', passport.authenticate('jwt', { session: false }), as
         res.status(500).send('Error: ' + error);
     }
 });
-
-const { check, validationResult } = require('express-validator');
 
 // User registration (no authentication needed here)
 app.post('/users', [
