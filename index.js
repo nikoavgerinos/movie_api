@@ -35,6 +35,13 @@ const accessLogStream = fs.createWriteStream(path.join('log.txt'), { flags: 'a' 
 
 app.use(morgan('common'));
 
+
+// Handle requests to the root URL
+app.get('/', (req, res) => {
+    res.send('Welcome to MyFlix API');
+});
+
+
 // Return a list of ALL movies to the user (requires authentication)
 app.get('/movies', passport.authenticate('jwt', { session: false }), async (req, res) => {
     await Movies.find()
