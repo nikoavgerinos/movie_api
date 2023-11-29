@@ -51,7 +51,7 @@ This project demonstrates full-stack JavaScript development, including APIs, web
 ## API Endpoints 🚧
 - `GET /movies`: Return a list of all movies
 - `GET /movies/:title`: Return data about a single movie by title
-- ... (List other endpoints)
+- ... 
 
 ## Testing 🧪
 Test the API using Postman. Ensure all endpoints return the expected data.
