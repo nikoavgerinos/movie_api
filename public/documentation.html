@@ -40,6 +40,29 @@
         </thead>
         <tbody>
           <tr>
+            <td>Get data about all movies</td>
+            <td>/movies</td>
+            <td>GET</td>
+            <td>None</td>
+            <td>
+              A JSON object holding all info data of all movies, containing
+              title, year, image url, a brief description, director info and the
+              genre. Example:
+              <code>
+                { "Title": "Inception", "Description": "A thief who steals
+                corporate secrets through the use of dream-sharing technology is
+                given the inverse task of planting an idea into the mind of a
+                C.E.O.", "Genre": { "Name": "Sci-Fi", "Description": "Science
+                fiction films are speculative fiction that explore imaginative
+                and futuristic concepts." }, "Director": { "Name": "Christopher
+                Nolan", "Bio": "Christopher Nolan, a British-American film
+                director, producer, and screenwriter born in 1970, is known for
+                his innovative storytelling and groundbreaking films.", "Birth":
+                "1970", "Death": null }, "Featured": true }
+              </code>
+            </td>
+          </tr>
+          <tr>
             <td>Get data about a single movie by title</td>
             <td>/movies/:title</td>
             <td>GET</td>
@@ -64,7 +87,7 @@
           </tr>
           <tr>
             <td>Return data about a genre by name</td>
-            <td>/movies/genre/:genreName</td>
+            <td>/genres/:genreName</td>
             <td>GET</td>
             <td>None</td>
             <td>
@@ -79,7 +102,7 @@
           </tr>
           <tr>
             <td>Return data with info about a specific director</td>
-            <td>/movies/directors/:directorsName</td>
+            <td>/directors/:directorsName</td>
             <td>GET</td>
             <td>None</td>
             <td>
@@ -104,9 +127,7 @@
               follows:
               <code>
                 { "Username": "newUser", "Password": "password123", "Email":
-                "newuser@example.com", "Birthday": "1990-01-01T00:00:00.000Z",
-                "FavoriteMovies": [], "_id": "6565fdb3fc8d5f4e857f5dd2", "__v":
-                0 }
+                "newuser@example.com", "Birthday": "1990-01-01T00:00:00.000Z"}
               </code>
             </td>
             <td>
@@ -121,11 +142,11 @@
           </tr>
           <tr>
             <td>
-              Allow users to update their user info (username, password, email,
-              date of birth)
+              Allow users to see their user info (username, password, email, date of birth
+              and favorite movies)
             </td>
             <td>/users/:username</td>
-            <td>PUT</td>
+            <td>GET</td>
             <td>
               A JSON object holding the user info that is subject to change. It
               should contain at least one of the following key/value pairs:
@@ -142,14 +163,65 @@
               <code>
                 { "_id": "6565fdb3fc8d5f4e857f5dd2", "Username": "newUser",
                 "Password": "newPassword123", "Email": "new.email@example.com",
-                "Birthday": "1990-01-01T00:00:00.000Z", "FavoriteMovies": [],
-                "__v": 0 }
+                "Birthday": "1990-01-01T00:00:00.000Z", "FavoriteMovies": [
+                "656495341a40824464f3e0b5" ], "__v": 1 }
+              </code>
+            </td>
+          </tr>
+          <tr>
+            <td>Allow users to login with their username and password</td>
+            <td>/login</td>
+            <td>Post</td>
+            <td>
+              Parameters containing the following key/value pairs:
+              <code>
+                Key = Username, Value = newUser Key = Password, Value =
+                newPassword123
+              </code>
+            </td>
+            <td>
+              A JSON object holding data about the updated user information.
+              Example:
+              <code>
+                { "_id": "6565fdb3fc8d5f4e857f5dd2", "Username": "newUser",
+                "Password": "newPassword123", "Email": "new.email@example.com",
+                "Birthday": "1990-01-01T00:00:00.000Z", "FavoriteMovies": [
+                "656495341a40824464f3e0b5" ], "__v": 1 }, "token": "eyJhbGciOiJIUzI1Ni... }
+              </code>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              Allow users to update their user info (username, password, email,
+              date of birth and favorite movies)
+            </td>
+            <td>/users/:username</td>
+            <td>PUT</td>
+            <td>
+              A JSON object holding the user info that is subject to change. It
+              should contain at least one of the following key/value pairs:
+              <code>
+                { "_id": "6565fdb3fc8d5f4e857f5dd2", "Username": "newUser",
+                "Password": "newPassword123", "Email": "new.email@example.com",
+                "Birthday": "1990-01-01T00:00:00.000Z", "FavoriteMovies": [
+                "656495341a40824464f3e0b5" ], "__v": 1 }
+              </code>
+            </td>
+            <td>
+              A JSON object holding data about the updated user information.
+              Example:
+              <code>
+                { "_id": "6565fdb3fc8d5f4e857f5dd2", "Username": "newUser",
+                "Password": "newPassword123", "Email": "new.email@example.com",
+                "Birthday": "1990-01-01T00:00:00.000Z", "FavoriteMovies": [
+                "656495341a40824464f3e0b5" ], "__v": 1 }
               </code>
             </td>
           </tr>
           <tr>
             <td>Allow users to add a movie to their list of favorites</td>
-            <td>/users/:Username/movies/:movieID</td>
+            <td>/users/:Username/favorites/:movieID</td>
             <td>POST</td>
             <td>None</td>
             <td>
@@ -165,7 +237,7 @@
           </tr>
           <tr>
             <td>Allow users to remove a movie from their list of favorites</td>
-            <td>/users/:Username/movies/:movieID</td>
+            <td>/users/:Username/favorites/:movieID</td>
             <td>DELETE</td>
             <td>None</td>
             <td>
@@ -188,20 +260,7 @@
               A text message indicating whether a user was successfully removed.
             </td>
           </tr>
-          <tr>
-            <td>Allow users to update their password</td>
-            <td>/users/:username/password</td>
-            <td>PUT</td>
-            <td>
-              A JSON object holding the user's new password. Example:
-              <code> { "password": "newpassword456" } </code>
-            </td>
-            <td>
-              A JSON object indicating the success of the password update.
-              Example:
-              <code> { "message": "Password updated successfully." } </code>
-            </td>
-          </tr>
+         
         </tbody>
       </table>
     </div>

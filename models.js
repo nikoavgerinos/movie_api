@@ -4,16 +4,16 @@ let movieSchema = mongoose.Schema({
     Title: { type: String, required: true },
     Description: { type: String, required: true },
     Genre: {
-      Name: String,
-      Description: String,
+        Name: String,
+        Description: String,
     },
     Director: {
-      Name: String,
-      Bio: String,
-      Birth: String,
-      Death: String,
+        Name: String,
+        Bio: String,
+        Birth: String,
+        Death: String,
     },
-  
+
 });
 
 let userSchema = mongoose.Schema({

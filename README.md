@@ -1,8 +1,8 @@
-# myFlix - Server-Side Component
+# myFlix - Server-Side Component 🎬
 
 Welcome to myFlix! This is the server-side component of a web application that provides users with access to information about movies, directors, and genres. Users can sign up, update their personal information, and create a list of their favorite movies.
 
-## Table of Contents
+## Table of Contents 📑
 - [Introduction](#introduction)
 - [Features](#features)
 - [Technical Stack](#technical-stack)
@@ -13,10 +13,10 @@ Welcome to myFlix! This is the server-side component of a web application that p
 - [Contributing](#contributing)
 - [License](#license)
 
-## Introduction
+## Introduction 🚀
 This project demonstrates full-stack JavaScript development, including APIs, web server frameworks, databases, business logic, authentication, data security, and more.
 
-## Features
+## Features 🌟
 ### Essential Features
 - Return a list of ALL movies
 - Return data about a single movie by title
@@ -32,7 +32,7 @@ This project demonstrates full-stack JavaScript development, including APIs, web
 - Allow users to view information about different actors
 - Allow users to view more information about different movies
 
-## Technical Stack
+## Technical Stack 💻
 - **Node.js**: JavaScript runtime for server-side development
 - **Express**: Web server framework
 - **MongoDB**: NoSQL database for storing movie data
@@ -41,27 +41,26 @@ This project demonstrates full-stack JavaScript development, including APIs, web
 - **Postman**: API testing
 - **Heroku**: Deployment
 
-## Setup
+## Setup 🛠️
 1. Clone the repository
 2. Install dependencies: `npm install`
 3. Set up the MongoDB database
 4. Configure environment variables
 5. Run the server: `npm start`
 
-## API Endpoints
+## API Endpoints 🚧
 - `GET /movies`: Return a list of all movies
 - `GET /movies/:title`: Return data about a single movie by title
 - ... (List other endpoints)
 
-## Testing
+## Testing 🧪
 Test the API using Postman. Ensure all endpoints return the expected data.
 
-## Deployment
+## Deployment 🚢
 Deploy the API to Heroku to make it publicly accessible.
 
-## Contributing
+## Contributing 🤝
 If you'd like to contribute, please fork the repository and create a pull request.
 
-## License
+## License 📄
 This project is licensed under the [MIT License](LICENSE).
-
