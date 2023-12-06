@@ -15,7 +15,7 @@ const Movies = Models.Movie; // Use the correct property name 'Movie'
 const Users = Models.User;
 
 //mongoose.connect('mongodb://localhost:27017/cfDB', { useNewUrlParser: true, useUnifiedTopology: true });
-mongoose.connect( process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 
 
@@ -211,12 +211,15 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }), [
     }
 
     try {
+        // Hash the new password
+        const hashedPassword = await bcrypt.hash(req.body.Password, 10); // Adjust the salt rounds as needed
+
         const updatedUser = await Users.findOneAndUpdate(
             { Username: req.params.Username },
             {
                 $set: {
                     Username: req.body.Username,
-                    Password: req.body.Password,
+                    Password: hashedPassword, // Store the hashed password in the database
                     Email: req.body.Email,
                     Birthday: req.body.Birthday,
                 },
@@ -230,7 +233,6 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }), [
         res.status(500).send('Error: ' + err);
     }
 });
-
 // Add a movie to a user's list of favorites
 app.post('/users/:username/favorites/:movieId', passport.authenticate('jwt', { session: false }), [
     check('username', 'Invalid username').notEmpty(),
@@ -361,4 +363,4 @@ app.use((err, req, res, next) => {
 const port = process.env.PORT || 8080;
 app.listen(port, '0.0.0.0', () => {
     console.log('Listening on Port ' + port);
-});
+}); 
