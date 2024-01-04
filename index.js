@@ -211,8 +211,8 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }), [
     }
 
     try {
-        // Hash the new password
-        const hashedPassword = await bcrypt.hash(req.body.Password, 10); // Adjust the salt rounds as needed
+        // Hash the password before storing it
+        const hashedPassword = hashPassword(req.body.Password);
 
         const updatedUser = await Users.findOneAndUpdate(
             { Username: req.params.Username },
