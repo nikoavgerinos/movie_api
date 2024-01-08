@@ -15,7 +15,12 @@ const Movies = Models.Movie; // Use the correct property name 'Movie'
 const Users = Models.User;
 
 //mongoose.connect('mongodb://localhost:27017/cfDB', { useNewUrlParser: true, useUnifiedTopology: true });
-mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+//mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(
+    "mongodb+srv://myFlixDbAdmin:EplOaPb2Owdvxiul@myflixdb.1f1dsez.mongodb.net/myFlixDB?retryWrites=true&w=majority"
+
+
+)
 
 
 
@@ -125,6 +130,7 @@ app.get('/directors/:name', passport.authenticate('jwt', { session: false }), as
         res.status(500).send('Error: ' + error);
     }
 });
+
 
 // User registration (no authentication needed here)
 app.post('/users', [
